@@ -80,10 +80,10 @@ public class MainWindow {
 	private ScheduledExecutorService exec;
 	private Runnable executeRunnable;
 	private static TextArea consoleTextArea;
-	private String key = "46308c25cef506f226fe7721d7b2d95f";
-	private String token = "d2b62245631a432f9507505542dd0ab9992a96171d79b265a0f682e956b7b479";
+	private static String key = "46308c25cef506f226fe7721d7b2d95f";
+	private static String token = "d2b62245631a432f9507505542dd0ab9992a96171d79b265a0f682e956b7b479";
 	private static String url = "http://hkctrtrp/hkctrtrpapps/layouts/SR/SRViewBrowse.aspx?viewid=Outstanding_TT_for_IRIS-4_SHP_ALL";
-	private String board_id = "ZWpit6sv";//ZWpit6sv,xZ5BG9Pr
+	private static String board_id = "ZWpit6sv";//ZWpit6sv,xZ5BG9Pr
 	private JPanel memberPanel2;
 	private JPanel labelPanel2;
 
@@ -255,9 +255,9 @@ public class MainWindow {
 				configTable.setModel(new DefaultTableModel(
 					new Object[][] {
 						{"KEY", "46308c25cef506f226fe7721d7b2d95f"},
-						{"TOKEN", "d2b62245631a432f9507505542dd0ab9992a96171d79b265a0f"},
+						{"TOKEN", "d2b62245631a432f9507505542dd0ab9992a96171d79b265a0f682e956b7b479"},
 						{"URL", "http://hkctrtrp/hkctrtrpapps/layouts/SR/SRViewBrowse.aspx?viewid=Outstanding_TT_for_IRIS-4_SHP_ALL"},
-						{"BOARD_ID", "xZ5BG9Pr"},
+						{"BOARD_ID", "ZWpit6sv"},
 					},
 					new String[] {
 						"KEY", "VALUE"
@@ -536,8 +536,8 @@ public class MainWindow {
 			//check duplicate ticket card
 			List<Ticket> newTickets = new ArrayList<>();
 			List<Card> cards = new ArrayList<>();
-			String url = "https://api.trello.com/1/boards/xZ5BG9Pr/cards?key=46308c25cef506f226fe7721d7b2d95f&token=d2b62245631a432f9507505542dd0ab9992a96171d79b265a0f682e956b7b479";
-
+			String url = "https://api.trello.com/1/boards/"+board_id+"/cards?key="+key+"&token="+token;
+			System.out.println(url);
 			HttpClient client = HttpClientBuilder.create().build();
 			HttpGet request = new HttpGet(url);
 			HttpResponse response = client.execute(request);
@@ -561,7 +561,8 @@ public class MainWindow {
 					
 					JSONObject cardObject = array.getJSONObject(i);
 					Card card = gson.fromJson(cardObject.toString(), Card.class);
-					cards.add(card);		
+					cards.add(card);
+					System.out.println(card.getName());
 				}
 
 			}
@@ -580,6 +581,7 @@ public class MainWindow {
 				}
 				index++;
 				newTickets.add(ticket1);
+				System.out.println(ticket1.getNumber());
 			}
 			
 			for (Ticket ticket : newTickets) {
